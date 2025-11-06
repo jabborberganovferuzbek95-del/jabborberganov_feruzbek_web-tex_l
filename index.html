@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Kitobxon - O'zbek elektron kutubxonasi">
+  <meta name="author" content="Kitobxon Team">
+  <title>Kitobxon - Elektron Kutubxona</title>
+  
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <!-- ==========================================
+       LOGIN PAGE
+  ========================================== -->
+  <div id="loginPage" class="page-container">
+    <h1 id="loginHeader" class="login-header">
+      📚 Kitobxon Sahifasiga hush kelibsiz
+    </h1>
+    
+    <!-- LOGIN FORM -->
+    <div id="loginBox" class="auth-box">
+      <h2>Kirish</h2>
+      <form id="loginForm" onsubmit="handleLogin(event)" autocomplete="on">
+        <input 
+          type="text" 
+          id="loginUsername" 
+          name="username"
+          placeholder="Foydalanuvchi nomi" 
+          autocomplete="username"
+          required
+          minlength="3"
+          aria-label="Foydalanuvchi nomi"
+        >
+        <input 
+          type="password" 
+          id="loginPassword" 
+          name="password"
+          placeholder="Parol" 
+          autocomplete="current-password"
+          required
+          minlength="6"
+          aria-label="Parol"
+        >
+        <button type="submit" class="btn-primary">Kirish</button>
+      </form>
+      <p id="loginMsg" class="message" role="alert" aria-live="polite"></p>
+      <p class="switch-form" onclick="showRegisterForm()" tabindex="0" role="button">
+        📝 Ro'yxatdan o'tish
+      </p>
+    </div>
+    
+    <!-- REGISTER FORM -->
+    <div id="registerBox" class="auth-box" style="display: none;">
+      <h2>Ro'yxatdan o'tish</h2>
+      <form id="registerForm" onsubmit="handleRegister(event)" autocomplete="off">
+        <input 
+          type="text" 
+          id="regUsername" 
+          name="username"
+          placeholder="Foydalanuvchi nomi" 
+          autocomplete="off"
+          required
+          minlength="3"
+          aria-label="Foydalanuvchi nomi"
+        >
+        <input 
+          type="email" 
+          id="regEmail" 
+          name="email"
+          placeholder="Email" 
+          autocomplete="email"
+          required
+          aria-label="Email"
+        >
+        <input 
+          type="password" 
+          id="regPassword" 
+          name="password"
+          placeholder="Parol" 
+          autocomplete="new-password"
+          required
+          minlength="6"
+          aria-label="Parol"
+        >
+        <input 
+          type="password" 
+          id="regConfirmPassword" 
+          name="confirmPassword"
+          placeholder="Parolni tasdiqlash" 
+          autocomplete="new-password"
+          required
+          minlength="6"
+          aria-label="Parolni tasdiqlash"
+        >
+        <button type="submit" class="btn-primary">Ro'yxatdan o'tish</button>
+      </form>
+      <p id="registerMsg" class="message" role="alert" aria-live="polite"></p>
+      <p class="switch-form" onclick="showLoginForm()" tabindex="0" role="button">
+        🔐 Kirish
+      </p>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MAIN PAGE
+  ========================================== -->
+  <div id="mainPage" class="page-container" style="display: none;">
+    <header class="main-header">
+      <h1>📚 Kitobxon</h1>
+      <div class="user-info">
+        <div class="user-badge">
+          <span aria-hidden="true">👤</span>
+          <span id="currentUser">Foydalanuvchi</span>
+          <span id="adminBadge" class="admin-badge" style="display:none;">ADMIN</span>
+        </div>
+        <button class="logout-btn" onclick="handleLogout()" aria-label="Chiqish">
+          🚪 Chiqish
+        </button>
+      </div>
+    </header>
+
+    <nav class="main-nav" role="navigation">
+      <a href="#books" class="nav-link active" onclick="showSection('books', this)" role="tab">
+        Kitoblar
+      </a>
+      <a href="#photos" class="nav-link" onclick="showSection('photos', this)" role="tab">
+        Suratlar
+      </a>
+      <a href="#videos" class="nav-link" onclick="showSection('videos', this)" role="tab">
+        Videolar
+      </a>
+    </nav>
+
+    <main class="container">
+      <h2 class="section-title" id="sectionTitle">📖 Kitoblar</h2>
+      
+      <div id="bookList" class="content-grid" role="list"></div>
+      <div id="photoList" class="content-grid" style="display:none;" role="list"></div>
+      <div id="videoList" class="content-grid" style="display:none;" role="list"></div>
+    </main>
+  </div>
+
+  <!-- ==========================================
+       MODALS
+  ========================================== -->
+  
+  <!-- Book Modal -->
+  <div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-content">
+      <button 
+        id="closeModal" 
+        class="btn-close" 
+        onclick="closeModal()" 
+        aria-label="Yopish"
+      >
+        ✖ Yopish
+      </button>
+      <iframe 
+        id="bookFrame" 
+        title="Kitob ko'rinishi"
+        sandbox="allow-same-origin allow-scripts"
+      ></iframe>
+    </div>
+  </div>
+
+  <!-- Photo Modal -->
+  <div id="photoModal" class="modal" role="dialog" aria-modal="true" onclick="closePhotoModal()">
+    <button 
+      class="btn-close modal-close-top" 
+      onclick="closePhotoModal()" 
+      aria-label="Yopish"
+    >
+      ✖ Yopish
+    </button>
+    <img id="photoModalImg" src="" alt="Katta surat" loading="lazy">
+  </div>
+
+  <!-- Video Modal -->
+  <div id="videoModal" class="modal" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <button 
+        class="btn-close" 
+        onclick="closeVideoModal()" 
+        aria-label="Yopish"
+      >
+        ✖ Yopish
+      </button>
+      <iframe 
+        id="videoFrame" 
+        title="Video player"
+        width="960" 
+        height="540" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen
+      ></iframe>
+    </div>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="script.js"></script>
+</body>
+</html>
