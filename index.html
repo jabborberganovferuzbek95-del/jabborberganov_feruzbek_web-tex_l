@@ -1,214 +1,397 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Kitobxon - O'zbek elektron kutubxonasi">
-  <meta name="author" content="Kitobxon Team">
-  <title>Kitobxon - Elektron Kutubxona</title>
-  
-  <!-- Preconnect for performance -->
-  <link rel="preconnect" href="https://images.unsplash.com">
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-  
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="./style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM Manipulation - Amaliy Dars</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 5px solid #667eea;
+        }
+        
+        h2 {
+            color: #764ba2;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        h3 {
+            color: #667eea;
+            margin: 20px 0 10px 0;
+        }
+        
+        .theory-text {
+            text-align: justify;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .purpose-list, .theory-list {
+            margin-left: 20px;
+            color: #555;
+        }
+        
+        .purpose-list li, .theory-list li {
+            margin-bottom: 10px;
+        }
+        
+        .demo-area {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px dashed #667eea;
+            min-height: 100px;
+            margin: 20px 0;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin: 5px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        input[type="text"] {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            width: 250px;
+            margin-right: 10px;
+        }
+        
+        .code-example {
+            background: #2d3748;
+            color: #a0aec0;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        
+        .code-example .keyword {
+            color: #f687b3;
+        }
+        
+        .code-example .function {
+            color: #63b3ed;
+        }
+        
+        .code-example .string {
+            color: #68d391;
+        }
+        
+        .demo-item {
+            background: #e8f5e9;
+            padding: 10px 15px;
+            margin: 8px 0;
+            border-radius: 6px;
+            border-left: 4px solid #4caf50;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .delete-btn {
+            background: #f44336;
+            padding: 5px 12px;
+            font-size: 13px;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-  <!-- ==========================================
-       LOGIN PAGE
-  ========================================== -->
-  <div id="loginPage" class="page-container">
-    <h1 id="loginHeader" class="login-header">
-      📚 Kitobxon Sahifasiga hush kelibsiz
-    </h1>
-    
-    <!-- LOGIN FORM -->
-    <div id="loginBox" class="auth-box">
-      <h2>Kirish</h2>
-      <form id="loginForm" onsubmit="handleLogin(event)" autocomplete="on">
-        <input 
-          type="text" 
-          id="loginUsername" 
-          name="username"
-          placeholder="Foydalanuvchi nomi" 
-          autocomplete="username"
-          required
-          minlength="3"
-          aria-label="Foydalanuvchi nomi"
-        >
-        <input 
-          type="password" 
-          id="loginPassword" 
-          name="password"
-          placeholder="Parol" 
-          autocomplete="current-password"
-          required
-          minlength="6"
-          aria-label="Parol"
-        >
-        <button type="submit" class="btn-primary">Kirish</button>
-      </form>
-      <p id="loginMsg" class="message" role="alert" aria-live="polite"></p>
-      <p class="switch-form" onclick="showRegisterForm()" tabindex="0" role="button">
-        📝 Ro'yxatdan o'tish
-      </p>
-    </div>
-    
-    <!-- REGISTER FORM -->
-    <div id="registerBox" class="auth-box" style="display: none;">
-      <h2>Ro'yxatdan o'tish</h2>
-      <form id="registerForm" onsubmit="handleRegister(event)" autocomplete="off">
-        <input 
-          type="text" 
-          id="regUsername" 
-          name="username"
-          placeholder="Foydalanuvchi nomi" 
-          autocomplete="off"
-          required
-          minlength="3"
-          aria-label="Foydalanuvchi nomi"
-        >
-        <input 
-          type="email" 
-          id="regEmail" 
-          name="email"
-          placeholder="Email" 
-          autocomplete="email"
-          required
-          aria-label="Email"
-        >
-        <input 
-          type="password" 
-          id="regPassword" 
-          name="password"
-          placeholder="Parol" 
-          autocomplete="new-password"
-          required
-          minlength="6"
-          aria-label="Parol"
-        >
-        <input 
-          type="password" 
-          id="regConfirmPassword" 
-          name="confirmPassword"
-          placeholder="Parolni tasdiqlash" 
-          autocomplete="new-password"
-          required
-          minlength="6"
-          aria-label="Parolni tasdiqlash"
-        >
-        <button type="submit" class="btn-primary">Ro'yxatdan o'tish</button>
-      </form>
-      <p id="registerMsg" class="message" role="alert" aria-live="polite"></p>
-      <p class="switch-form" onclick="showLoginForm()" tabindex="0" role="button">
-        🔐 Kirish
-      </p>
-    </div>
-  </div>
-
-  <!-- ==========================================
-       MAIN PAGE
-  ========================================== -->
-  <div id="mainPage" class="page-container" style="display: none;">
-    <header class="main-header">
-      <h1>📚 Kitobxon</h1>
-      <div class="user-info">
-        <div class="user-badge">
-          <span aria-hidden="true">👤</span>
-          <span id="currentUser">Foydalanuvchi</span>
-          <span id="adminBadge" class="admin-badge" style="display:none;">ADMIN</span>
+    <div class="container">
+        <h1>🎯 DOM Manipulation</h1>
+        <p class="subtitle">Elementlarni qo'shish va o'zgartirish</p>
+        
+        <!-- MAQSADI -->
+        <div class="section">
+            <h2>📌 Ishning Maqsadi</h2>
+            <p class="theory-text">
+                Ushbu amaliy mashg'ulotning asosiy maqsadi - JavaScript orqali HTML sahifasidagi 
+                elementlarni dinamik ravishda boshqarish ko'nikmalarini egallash.
+            </p>
+            <ul class="purpose-list">
+                <li><strong>DOM tushunchasini</strong> o'rganish va uning ahamiyatini tushunish</li>
+                <li><strong>Elementlarni tanlash</strong> usullarini amalda qo'llash</li>
+                <li><strong>Yangi elementlar yaratish</strong> va sahifaga qo'shish</li>
+                <li><strong>Mavjud elementlarni o'zgartirish</strong> va o'chirish</li>
+                <li><strong>Interaktiv veb-ilovalar</strong> yaratish ko'nikmalarini rivojlantirish</li>
+            </ul>
         </div>
-        <button class="logout-btn" onclick="handleLogout()" aria-label="Chiqish">
-          🚪 Chiqish
-        </button>
-      </div>
-    </header>
+        
+        <!-- KIRISH -->
+        <div class="section">
+            <h2>🚀 Kirish</h2>
+            <p class="theory-text">
+                Zamonaviy veb-saytlar faqat statik matn va rasmlardan iborat emas. Foydalanuvchi 
+                bilan o'zaro ta'sir qiluvchi, dinamik sahifalar yaratish uchun JavaScript va DOM 
+                (Document Object Model) muhim rol o'ynaydi.
+            </p>
+            <p class="theory-text">
+                Tasavvur qiling, siz onlayn do'kon yaratyapsiz. Foydalanuvchi mahsulotni savatchaga 
+                qo'shganda, sahifani qayta yuklashsiz savatchadagi elementlar soni o'zgarishi kerak. 
+                Aynan shu vazifalarni DOM manipulation orqali amalga oshiramiz.
+            </p>
+        </div>
+        
+        <!-- NAZARIY QISM -->
+        <div class="section">
+            <h2>📚 Nazariy Qism</h2>
+            
+            <h3>1. DOM (Document Object Model) nima?</h3>
+            <p class="theory-text">
+                DOM - bu HTML hujjatning dasturlash interfeysi. U HTML sahifani daraxt tuzilmasida 
+                ko'rsatadi va JavaScript orqali uni o'zgartirish imkonini beradi. Har bir HTML 
+                elementi - bu DOMda <span class="highlight">obyekt</span> (object) hisoblanadi.
+            </p>
+            
+            <h3>2. Elementlarni tanlash usullari:</h3>
+            <div class="code-example">
+<span class="comment">// ID orqali tanlash</span>
+<span class="keyword">let</span> element = <span class="keyword">document</span>.<span class="function">getElementById</span>(<span class="string">'myId'</span>);
 
-    <nav class="main-nav" role="navigation">
-      <a href="#books" class="nav-link active" onclick="showSection('books', this)" role="tab">
-        Kitoblar
-      </a>
-      <a href="#photos" class="nav-link" onclick="showSection('photos', this)" role="tab">
-        Suratlar
-      </a>
-      <a href="#videos" class="nav-link" onclick="showSection('videos', this)" role="tab">
-        Videolar
-      </a>
-    </nav>
+<span class="comment">// Class orqali tanlash</span>
+<span class="keyword">let</span> elements = <span class="keyword">document</span>.<span class="function">getElementsByClassName</span>(<span class="string">'myClass'</span>);
 
-    <main class="container">
-      <h2 class="section-title" id="sectionTitle">📖 Kitoblar</h2>
-      
-      <div id="bookList" class="content-grid" role="list"></div>
-      <div id="photoList" class="content-grid" style="display:none;" role="list"></div>
-      <div id="videoList" class="content-grid" style="display:none;" role="list"></div>
-    </main>
-  </div>
+<span class="comment">// Selector orqali tanlash (eng ko'p ishlatiladigan)</span>
+<span class="keyword">let</span> elem = <span class="keyword">document</span>.<span class="function">querySelector</span>(<span class="string">'.myClass'</span>);
+<span class="keyword">let</span> elems = <span class="keyword">document</span>.<span class="function">querySelectorAll</span>(<span class="string">'div'</span>);
+            </div>
+            
+            <h3>3. Element yaratish va qo'shish:</h3>
+            <div class="code-example">
+<span class="comment">// Yangi element yaratish</span>
+<span class="keyword">let</span> yangiDiv = <span class="keyword">document</span>.<span class="function">createElement</span>(<span class="string">'div'</span>);
 
-  <!-- ==========================================
-       MODALS
-  ========================================== -->
-  
-  <!-- Book Modal -->
-  <div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal-content">
-      <button 
-        id="closeModal" 
-        class="btn-close" 
-        onclick="closeModal()" 
-        aria-label="Yopish"
-      >
-        ✖ Yopish
-      </button>
-      <iframe 
-        id="bookFrame" 
-        title="Kitob ko'rinishi"
-        sandbox="allow-same-origin allow-scripts"
-      ></iframe>
+<span class="comment">// Matn qo'shish</span>
+yangiDiv.<span class="function">textContent</span> = <span class="string">'Salom dunyo!'</span>;
+
+<span class="comment">// Sahifaga qo'shish</span>
+<span class="keyword">document</span>.<span class="function">body</span>.<span class="function">appendChild</span>(yangiDiv);
+            </div>
+            
+            <h3>4. Elementni o'zgartirish:</h3>
+            <div class="code-example">
+<span class="comment">// Matnni o'zgartirish</span>
+element.<span class="function">textContent</span> = <span class="string">'Yangi matn'</span>;
+
+<span class="comment">// HTML ni o'zgartirish</span>
+element.<span class="function">innerHTML</span> = <span class="string">'&lt;strong&gt;Qalin matn&lt;/strong&gt;'</span>;
+
+<span class="comment">// Style o'zgartirish</span>
+element.<span class="function">style</span>.<span class="function">color</span> = <span class="string">'red'</span>;
+
+<span class="comment">// Class qo'shish/olib tashlash</span>
+element.<span class="function">classList</span>.<span class="function">add</span>(<span class="string">'yangiClass'</span>);
+element.<span class="function">classList</span>.<span class="function">remove</span>(<span class="string">'eskiClass'</span>);
+            </div>
+            
+            <h3>5. Elementni o'chirish:</h3>
+            <div class="code-example">
+<span class="comment">// Elementni o'chirish</span>
+element.<span class="function">remove</span>();
+
+<span class="comment">// Yoki ota-element orqali</span>
+parentElement.<span class="function">removeChild</span>(childElement);
+            </div>
+        </div>
+        
+        <!-- AMALIY QISM -->
+        <div class="section">
+            <h2>💻 Amaliy Namuna - Vazifalar Ro'yxati</h2>
+            <p class="theory-text">Quyidagi misolda DOM manipulation usullarini amalda ko'ramiz:</p>
+            
+            <div style="margin: 20px 0;">
+                <input type="text" id="taskInput" placeholder="Yangi vazifa kiriting...">
+                <button onclick="addTask()">➕ Qo'shish</button>
+                <button onclick="changeStyle()">🎨 Rangni o'zgartirish</button>
+                <button onclick="clearAll()">🗑️ Hammasini tozalash</button>
+            </div>
+            
+            <div id="taskList" class="demo-area">
+                <p style="color: #999; text-align: center;">Vazifalar bu yerda ko'rinadi...</p>
+            </div>
+            
+            <div class="code-example" style="margin-top: 20px;">
+<span class="keyword">function</span> <span class="function">addTask</span>() {
+    <span class="keyword">let</span> input = <span class="keyword">document</span>.<span class="function">getElementById</span>(<span class="string">'taskInput'</span>);
+    <span class="keyword">let</span> taskList = <span class="keyword">document</span>.<span class="function">getElementById</span>(<span class="string">'taskList'</span>);
+    
+    <span class="keyword">if</span> (input.value.trim() !== <span class="string">''</span>) {
+        <span class="keyword">let</span> taskDiv = <span class="keyword">document</span>.<span class="function">createElement</span>(<span class="string">'div'</span>);
+        taskDiv.<span class="function">className</span> = <span class="string">'demo-item'</span>;
+        taskDiv.<span class="function">innerHTML</span> = <span class="string">`
+            &lt;span&gt;${input.value}&lt;/span&gt;
+            &lt;button class="delete-btn" onclick="deleteTask(this)"&gt;O'chirish&lt;/button&gt;
+        `</span>;
+        
+        taskList.<span class="function">appendChild</span>(taskDiv);
+        input.value = <span class="string">''</span>;
+    }
+}
+            </div>
+        </div>
+        
+        <!-- XULOSA -->
+        <div class="section">
+            <h2>✅ Xulosa</h2>
+            <p class="theory-text">
+                DOM manipulation - bu zamonaviy veb-dasturlashning asosi. Ushbu ko'nikmalarni 
+                egallash orqali siz:
+            </p>
+            <ul class="theory-list">
+                <li>Interaktiv veb-sahifalar yarata olasiz</li>
+                <li>Foydalanuvchi tajribasini yaxshilaysiz</li>
+                <li>Dinamik kontent bilan ishlay olasiz</li>
+                <li>Single Page Application (SPA) yaratish uchun tayyor bo'lasiz</li>
+            </ul>
+        </div>
     </div>
-  </div>
 
-  <!-- Photo Modal -->
-  <div id="photoModal" class="modal" role="dialog" aria-modal="true" onclick="closePhotoModal()">
-    <button 
-      class="btn-close modal-close-top" 
-      onclick="closePhotoModal()" 
-      aria-label="Yopish"
-    >
-      ✖ Yopish
-    </button>
-    <img id="photoModalImg" src="" alt="Katta surat" loading="lazy">
-  </div>
-
-  <!-- Video Modal -->
-  <div id="videoModal" class="modal" role="dialog" aria-modal="true">
-    <div class="modal-content">
-      <button 
-        class="btn-close" 
-        onclick="closeVideoModal()" 
-        aria-label="Yopish"
-      >
-        ✖ Yopish
-      </button>
-      <iframe 
-        id="videoFrame" 
-        title="Video player"
-        width="960" 
-        height="540" 
-        frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-        allowfullscreen
-      ></iframe>
-    </div>
-  </div>
-
-  <!-- Loading Spinner -->
-  <div id="loadingSpinner" class="loading-spinner" style="display: none;">
-    <div class="spinner"></div>
-  </div>
-
-  <!-- Scripts -->
-  <script src="script.js"></script>
+    <script>
+        function addTask() {
+            let input = document.getElementById('taskInput');
+            let taskList = document.getElementById('taskList');
+            
+            if (input.value.trim() !== '') {
+                // Agar birinchi marta qo'shilayotgan bo'lsa, placeholder ni o'chirish
+                if (taskList.children.length === 1 && taskList.children[0].tagName === 'P') {
+                    taskList.innerHTML = '';
+                }
+                
+                // Yangi vazifa yaratish
+                let taskDiv = document.createElement('div');
+                taskDiv.className = 'demo-item';
+                
+                let taskText = document.createElement('span');
+                taskText.textContent = input.value;
+                
+                let deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.textContent = "O'chirish";
+                deleteBtn.onclick = function() {
+                    deleteTask(this);
+                };
+                
+                taskDiv.appendChild(taskText);
+                taskDiv.appendChild(deleteBtn);
+                taskList.appendChild(taskDiv);
+                
+                input.value = '';
+            } else {
+                alert("Iltimos, vazifa kiriting!");
+            }
+        }
+        
+        function deleteTask(btn) {
+            let taskDiv = btn.parentElement;
+            taskDiv.style.animation = 'slideOut 0.3s ease-out';
+            setTimeout(() => {
+                taskDiv.remove();
+                
+                let taskList = document.getElementById('taskList');
+                if (taskList.children.length === 0) {
+                    taskList.innerHTML = '<p style="color: #999; text-align: center;">Vazifalar bu yerda ko\'rinadi...</p>';
+                }
+            }, 300);
+        }
+        
+        function changeStyle() {
+            let tasks = document.querySelectorAll('.demo-item');
+            let colors = ['#e8f5e9', '#e3f2fd', '#fff3e0', '#f3e5f5', '#e0f2f1'];
+            
+            tasks.forEach((task, index) => {
+                task.style.background = colors[index % colors.length];
+            });
+        }
+        
+        function clearAll() {
+            let taskList = document.getElementById('taskList');
+            if (confirm("Hamma vazifalarni o'chirmoqchimisiz?")) {
+                taskList.innerHTML = '<p style="color: #999; text-align: center;">Vazifalar bu yerda ko\'rinadi...</p>';
+            }
+        }
+        
+        // Enter tugmasi orqali qo'shish
+        document.getElementById('taskInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addTask();
+            }
+        });
+    </script>
 </body>
 </html>
