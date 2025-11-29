@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Storage Loyihasi</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body id='bg'>
+
+    <div class="container">
+        <h2>Foydalanuvchi Ma'lumotlari</h2>
+
+        <div class="input-group">
+            <label for="name">Ism:</label>
+            <input type="text" id="name" placeholder="Ism...">
+        </div>
+
+        <div class="input-group">
+            <label for="surname">Familiya:</label>
+            <input type="text" id="surname" placeholder="Familiya...">
+        </div>
+
+        <div class="input-group">
+            <label for="age">Yosh:</label>
+            <input type="number" id="age" placeholder="Yosh..." min="0">
+        </div>
+
+        <div class="button-section">
+            <button id='btnSave' class="btn">Ma'lumotlarni Saqlash</button>
+            <button id='btnLoad' class="btn">Yuklash</button>
+        </div>
+
+        <h3>📝 Ma'lumotlar Displeyi</h3>
+        <div class="data-display">
+            <p id="p_name">Ism: </p>
+            <p id="p_surname">Familiya: </p>
+            <p id="p_age">Yosh: </p>
+        </div>
+
+        <hr>
+
+        <h2>🎨 Style Sozlamalari</h2>
+        <p id="p2">Bu yerdagi matnning shrift o'lchami va rangi o'zgaradi.</p>
+
+        <div class="style-controls">
+            <div class="control-item">
+                <label for="textColor">Tekst Rangi:</label>
+                <input type="color" id="textColor" value="#000000">
+            </div>
+
+            <div class="control-item">
+                <label for="color">Body Fon Rangi:</label>
+                <input type="color" id="color" value="#ffffff">
+            </div>
+
+            <div class="control-item">
+                <label for="fontsize">Shrift O'lchami (px):</label>
+                <input type="number" id="fontsize" value="16" min="10" max="100">
+            </div>
+        </div>
+
+        <div class="button-section">
+            <button id='btnChange' class="btn rang-btn">Dizayni yangilash</button>
+            <button id='btnclear' class="btn clear-btn">Local Storage'ni Tozalash</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
