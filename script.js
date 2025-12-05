@@ -191,6 +191,49 @@ const Notification = {
 };
 
 // ==========================================
+// SMALL ALERT / VALIDATION MODAL
+// Reusable tiny modal to show validation messages (falls back to alert())
+// ==========================================
+function openSmallModal(htmlContent) {
+  const small = document.getElementById('smallModal');
+  const textEl = document.getElementById('smallModalText');
+  if (!small || !textEl) {
+    // Fallback to native alert when markup not available
+    if (typeof htmlContent === 'string') {
+      // strip tags for alert
+      const tmp = document.createElement('div');
+      tmp.innerHTML = htmlContent;
+      alert(tmp.textContent || tmp.innerText || htmlContent);
+    } else {
+      alert(String(htmlContent));
+    }
+    return;
+  }
+
+  textEl.innerHTML = htmlContent;
+  small.style.display = 'flex';
+  // small fade-in via class for transition
+  setTimeout(() => small.classList.add('visible'), 10);
+  small.setAttribute('aria-hidden', 'false');
+}
+
+function closeSmallModal() {
+  const small = document.getElementById('smallModal');
+  if (!small) return;
+  small.classList.remove('visible');
+  small.setAttribute('aria-hidden', 'true');
+  // wait for transition then hide
+  setTimeout(() => { if (small) small.style.display = 'none'; }, 250);
+}
+
+function showMissingFieldsModal(fields) {
+  if (!Array.isArray(fields)) fields = [String(fields)];
+  const list = fields.map(f => `<li>${f}</li>`).join('');
+  const content = `<strong>Iltimos quyidagi maydonlarni to'ldiring:</strong><ul style="text-align:left;margin:8px 0 0 18px">${list}</ul>`;
+  openSmallModal(content);
+}
+
+// ==========================================
 // FORM HANDLING
 // ==========================================
 function showRegisterForm() {
@@ -226,9 +269,16 @@ function handleRegister(event) {
   const msg = document.getElementById("registerMsg");
 
   // Validation
-  if (!username || !email || !password || !confirmPassword) {
+  // Check for missing fields and show modal listing them
+  const missing = [];
+  if (!username) missing.push("Foydalanuvchi nomi");
+  if (!email) missing.push("Email");
+  if (!password) missing.push("Parol");
+  if (!confirmPassword) missing.push("Parolni tasdiqlash");
+  if (missing.length) {
+    showMissingFieldsModal(missing);
     msg.className = "error-msg";
-    msg.textContent = "❌ Barcha maydonlarni to'ldiring!";
+    msg.textContent = ""; // keep inline message area empty when modal is used
     return;
   }
 
@@ -295,8 +345,12 @@ function handleLogin(event) {
   const msg = document.getElementById("loginMsg");
 
   if (!user || !pass) {
+    const missing = [];
+    if (!user) missing.push('Foydalanuvchi nomi');
+    if (!pass) missing.push('Parol');
+    showMissingFieldsModal(missing);
     msg.className = "error-msg";
-    msg.textContent = "❌ Foydalanuvchi nomi va parolni kiriting!";
+    msg.textContent = "";
     return;
   }
 
