@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Postlar Jadvali</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2>📋 Postlar Jadvali</h2>
+        <p class="subtitle">JSONPlaceholder API dan olingan postlar</p>
+        
+        <div class="search-box">
+            <input id="myInput" type="text" placeholder="Qidirish: userId, id, sarlavha yoki matn...">
+        </div>
+        
+        <div class="info-box">
+            ℹ️ Jadvalda qidiruv uchun yuqoridagi maydondan foydalaning. Jadval avtomatik filtrlaniadi.
+        </div>
+        
+        <div id="loading" class="loading" style="display:none;">⏳ Ma'lumotlar yuklanmoqda...</div>
+        
+        <table id="mainTable" style="display:none;">
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Post ID</th>
+                    <th>Sarlavha</th>
+                    <th>Matn</th>
+                </tr>
+            </thead>
+            <tbody id="myTable">
+            </tbody>
+        </table>
+        
+        <div class="pagination" id="pagination"></div>
+        <div class="stats" id="stats"></div>
+        <div id="error"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
